@@ -1,54 +1,41 @@
-import React from "react";
-import Box from "@material-ui/core/Box";
-import {
-  ColumnDirective,
-  ColumnsDirective,
-  TreeGridComponent,
-} from "@syncfusion/ej2-react-treegrid";
-import {
-  ContextMenu,
-  Filter,
-  Inject,
-  Sort,
-  Edit,
-  Freeze,
-  Reorder,
-  Resize,
-  RowDD,
-} from "@syncfusion/ej2-react-treegrid";
-import { source } from "../src/data";
+import React from 'react';
+import Box from '@material-ui/core/Box';
+import { ColumnDirective, ColumnsDirective, TreeGridComponent } from '@syncfusion/ej2-react-treegrid';
+import { ContextMenu, Filter, Inject, Sort, Edit, Freeze, Reorder, Resize, RowDD } from '@syncfusion/ej2-react-treegrid';
+import { source } from '../src/data';
 
 export default function Index() {
+
   const columns = [
     {
-      field: "TaskID",
-      headerText: "Task ID",
-      width: "80",
+      field: 'TaskID',
+      headerText: 'Task ID',
+      width: '80',
     },
     {
-      field: "TaskName",
-      headerText: "Task Name",
-      width: "120",
+      field: 'TaskName',
+      headerText: 'Task Name',
+      width: '120',
     },
     {
-      field: "StartDate",
-      headerText: "Start Date",
-      width: "90",
+      field: 'StartDate',
+      headerText: 'Start Date',
+      width: '90',
     },
     {
-      field: "EndDate",
-      headerText: "End Date",
-      width: "90",
+      field: 'EndDate',
+      headerText: 'End Date',
+      width: '90',
     },
     {
-      field: "Duration",
-      headerText: "Duration",
-      width: "90",
+      field: 'Duration',
+      headerText: 'Duration',
+      width: '90',
     },
     {
-      field: "Progress",
-      headerText: "Progress",
-      width: "90",
+      field: 'Progress',
+      headerText: 'Progress',
+      width: '90',
     },
   ];
 
@@ -61,304 +48,252 @@ export default function Index() {
   const [frozenCount, setFrozenCount] = React.useState(0);
   const [isMultiSelect, setIsMultiSelect] = React.useState(false);
 
-  const [customCss, setCustomCss] = React.useState(
-    [...Array(columns.length)].map(
-      (val) =>
-        new Object({
-          textAlign: "right",
-          color: "black",
-          fontSize: "small",
-        })
-    )
-  );
+  const [customCss, setCustomCss] = React.useState([...Array(columns.length)].map(val => new Object({
+    textAlign: 'right',
+    color: 'black',
+    fontSize: 'small',
+  })));
 
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [selectedRecords, setSelectedRecords] = React.useState([]);
-  const [pasteType, seetPasteType] = React.useState("");
+  const [pasteType, seetPasteType] = React.useState('');
 
   const editSettings = {
     allowAdding: true,
     allowDeleting: true,
     allowEditing: true,
-    mode: "Dialog",
-    newRowPosition: "Child",
+    mode: 'Dialog',
+    newRowPosition: 'Child',
   };
 
   const filterOptions = {
-    type: "Menu",
+    type: 'Menu',
   };
 
   const singleSelectionSettings = {
-    type: "Single",
+    type: 'Single',
   };
 
   const multipleSelectionSettings = {
-    type: "Multiple",
+    type: 'Multiple',
   };
 
   const contextMenuItems = [
-    "AddRow",
-    "Edit",
-    "Delete",
-    {
-      text: "Style",
-      target: ".e-headercontent",
+    'AddRow',
+    'Edit', 
+    'Delete',
+    { 
+      text: 'Style', 
+      target: '.e-headercontent',
       items: [
-        {
-          text: "Font",
+        { 
+          text: 'Font',
           items: [
-            {
-              text: "Small",
-              id: "small",
+            { 
+              text: 'Small',
+              id: 'small',
             },
-            {
-              text: "Medium",
-              id: "medium",
+            { 
+              text: 'Medium',
+              id: 'medium',
             },
-            {
-              text: "Large",
-              id: "large",
+            { 
+              text: 'Large',
+              id: 'large',
             },
           ],
         },
-        {
-          text: "Color",
+        { 
+          text: 'Color',
           items: [
-            {
-              text: "Black",
-              id: "black",
+            { 
+              text: 'Black',
+              id: 'black',
+            },
+            { 
+              text: 'Red',
+              id: 'red',
             },
             {
-              text: "Red",
-              id: "red",
+              text: 'Green',
+              id: 'green',
             },
-            {
-              text: "Green",
-              id: "green",
-            },
-            {
-              text: "Blue",
-              id: "blue",
+            { 
+              text: 'Blue',
+              id: 'blue',
             },
           ],
         },
-        {
-          text: "Alignment",
+        { 
+          text: 'Alignment',
           items: [
-            {
-              text: "Left",
-              id: "left",
+            { 
+              text: 'Left',
+              id: 'left',
             },
-            {
-              text: "Center",
-              id: "center",
+            { 
+              text: 'Center',
+              id: 'center',
             },
-            {
-              text: "Right",
-              id: "right",
+            { 
+              text: 'Right',
+              id: 'right',
             },
           ],
         },
       ],
     },
-    {
-      text: "Freeze: ".concat(isFreeze ? "ON" : "OFF"),
-      target: ".e-headercontent",
-      id: "freeze",
-    },
-    {
-      text: "Filter: ".concat(isFilter ? "ON" : "OFF"),
-      target: ".e-headercontent",
-      id: "filter",
-    },
-    {
-      text: "Multi-Sort: ".concat(isMultiSort ? "ON" : "OFF"),
-      target: ".e-headercontent",
-      id: "msort",
-    },
-    {
-      text: "Multi-Select: ".concat(isMultiSelect ? "ON" : "OFF"),
-      target: ".e-content",
-      id: "mselect",
-    },
-    { text: "Copy", target: ".e-content", id: "copy" },
-    { text: "Cut", target: ".e-content", id: "cut" },
-    { text: "Paste as Sibling", target: ".e-content", id: "pasteassibling" },
-    { text: "Paste as Child", target: ".e-content", id: "pasteaschild" },
+    { text: 'Freeze: '.concat(isFreeze ? 'ON' : 'OFF'), target: '.e-headercontent', id: 'freeze' },
+    { text: 'Filter: '.concat(isFilter ? 'ON' : 'OFF'), target: '.e-headercontent', id: 'filter' },
+    { text: 'Multi-Sort: '.concat(isMultiSort ? 'ON' : 'OFF'), target: '.e-headercontent', id: 'msort' },
+    { text: 'Multi-Select: '.concat(isMultiSelect ? 'ON' : 'OFF'), target: '.e-content', id: 'mselect' },
+    { text: 'Copy', target: '.e-content', id: 'copy' },
+    { text: 'Cut', target: '.e-content', id: 'cut' },
+    { text: 'Paste as Sibling', target: '.e-content', id: 'pasteassibling' },
+    { text: 'Paste as Child', target: '.e-content', id: 'pasteaschild' },
   ];
 
   const contextMenuClick = (args) => {
     if (treegrid) {
       const id = args.item.id;
-      if (id == "freeze") {
+      if(id == 'freeze') {
         setFrozenCount(colIndex);
-        if (colIndex > 0) setIsFreeze(!isFreeze);
+        if(colIndex > 0) setIsFreeze(!isFreeze);
       }
-      if (id == "filter") {
+      if(id == 'filter') {
         setIsFilter(!isFilter);
       }
-      if (id == "msort") {
+      if(id == 'msort') {
         setIsMultiSort(!isMultiSort);
       }
-      if (id == "mselect") {
+      if(id == 'mselect') {
         setIsMultiSelect(!isMultiSelect);
       }
-      if (id == "left" || id == "center" || id == "right") {
-        setCustomCss(
-          customCss.map((val, index) =>
-            index === colIndex ? { ...val, textAlign: id } : val
-          )
-        );
+      if(id == 'left' || id == 'center' || id == 'right') {
+        setCustomCss(customCss.map((val, index) => index === colIndex ? { ...val, textAlign: id } : val));
       }
-      if (id == "small" || id == "medium" || id == "large") {
-        setCustomCss(
-          customCss.map((val, index) =>
-            index === colIndex ? { ...val, fontSize: id } : val
-          )
-        );
+      if(id == 'small' || id == 'medium' || id == 'large') {
+        setCustomCss(customCss.map((val, index) => index === colIndex ? { ...val, fontSize: id } : val));
       }
-      if (id == "black" || id == "red" || id == "green" || id == "blue") {
-        setCustomCss(
-          customCss.map((val, index) =>
-            index === colIndex ? { ...val, color: id } : val
-          )
-        );
+      if(id == 'black' || id == 'red' || id == 'green' || id == 'blue') {
+        setCustomCss(customCss.map((val, index) => index === colIndex ? { ...val, color: id } : val));
       }
-      if (id == "copy" || id == "cut") {
-        selectedRows.map((val) => {
-          val.style.backgroundColor = "";
-        });
-        treegrid.getSelectedRows().map((val) => {
-          val.style.backgroundColor = "wheat";
-        });
+      if(id == 'copy' || id == 'cut') {
+        selectedRows.map(val => {
+          val.style.backgroundColor = '';
+        })
+        treegrid.getSelectedRows().map(val => {
+          val.style.backgroundColor = 'wheat';
+        })
         setSelectedRows(treegrid.getSelectedRows());
         setSelectedRecords(treegrid.getSelectedRecords());
         seetPasteType(id);
       }
-      if (id == "pasteassibling" || id == "pasteaschild") {
-        if (pasteType === "cut" || pasteType === "copy") {
-          let data =
-            pasteType === "cut"
-              ? treegrid.dataSource.filter(
-                  (val) =>
-                    realRecords.filter(
-                      (value) => value["TaskID"] === val["TaskID"]
-                    ).length === 0
-                )
-              : treegrid.dataSource.map((val) => val);
+      if(id == 'pasteassibling' || id == 'pasteaschild') {
+        if(pasteType === 'cut' || pasteType === 'copy') {
+          let data = treegrid.dataSource.map(val => val);
+          const childs = getChilds(data, selectedRecords);
+          let realRecords = selectedRecords.filter(val => !childs.map(value => value['TaskID']).includes(val['TaskID'])).map(val => val['taskData']);
+          if(pasteType === 'cut') data = data.filter(val => !realRecords.map(value => value['TaskID']).includes(val['TaskID']));
           const onRecord = treegrid.getSelectedRecords()[0];
-          let realRecords = selectedRecords
-            .filter(
-              (val) =>
-                selectedRecords.filter(
-                  (value) => val["parentID"] === value["TaskID"]
-                ).length === 0
-            )
-            .map((val) => val["taskData"]);
-          if (
-            realRecords.filter((val) => val["TaskID"] === onRecord["parentID"])
-              .length === 0
-          ) {
-            if (id == "pasteassibling")
-              onRecord["parentID"]
-                ? realRecords.forEach(
-                    (val) => (val["parentID"] = onRecord["parentID"])
-                  )
-                : realRecords.forEach((val) => delete val["parentID"]);
+          if(childs.map(val => val['TaskID']).includes(onRecord['TaskID'])) {
+            alert('Selected error! There is a parent of selected record in the copy records.');
+          } else {
+            if(id == 'pasteassibling')
+              onRecord['parentID'] ? realRecords.forEach(val => val['parentID'] = onRecord['parentID']) : realRecords.forEach(val => delete val['parentID']);
             else
-              realRecords.forEach(
-                (val) => (val["parentID"] = onRecord["TaskID"])
-              );
-            if (pasteType === "copy") {
-              const maxID = Math.max(...data.map((val) => val["TaskID"]));
-              const childs = getChilds(data, realRecords).map((val) =>
-                val["parentID"] === undefined
-                  ? val
-                  : new Object({ ...val, parentID: val["parentID"] + maxID })
-              );
-              realRecords = realRecords.concat(childs);
-              realRecords = realRecords.map(
-                (val) => new Object({ ...val, TaskID: val["TaskID"] + maxID })
-              );
+              realRecords.forEach(val => val['parentID'] = onRecord['TaskID']);
+            if(pasteType === 'copy') {
+              const maxID = Math.max(...data.map(val => val['TaskID']));
+              realRecords = realRecords.concat(getChilds(data, realRecords));
+              realRecords = setNewIds(realRecords.map(val => val), maxID + 1);
             }
             let index = 0;
             data.forEach((val, i) => {
-              if (val["TaskID"] === onRecord["TaskID"]) index = i;
+              if(val['TaskID'] === onRecord['TaskID']) index = i;
             });
-            data.splice(index, 0, ...realRecords);
+            data.splice(index + 1, 0, ...realRecords);
             treegrid.dataSource = data;
-            selectedRows.map((val) => {
-              val.style.backgroundColor = "";
-            });
-            seetPasteType("");
-          } else {
-            alert(
-              "Selected error! There is a parent of selected record in the copy records."
-            );
+            selectedRows.map(val => {
+              val.style.backgroundColor = '';
+            })
+            seetPasteType('');
           }
         } else {
-          alert("Please select records to copy.");
+          alert('Please select records to copy.');
         }
       }
     }
-  };
+  }
 
   const getChilds = (data, records) => {
-    if (records.length === 0) return [];
-    const result = data.filter(
-      (val) =>
-        records.filter((value) => value["TaskID"] === val["parentID"]).length >
-        0
-    );
+    if(records.length === 0) return [];
+    const result = data.filter(val => records.map(value => value['TaskID']).includes(val['parentID']));
     return result.concat(getChilds(data, result));
-  };
+  }
+
+  const setNewIds = (records, newID) => {
+    let newIDs = {};
+    let result = records.map((val, index) => {
+      newIDs[val['TaskID']] = newID + index;
+      return { ...val, TaskID: newID + index };
+    })
+    result.forEach(val => {
+      if(val['parentID'] !== undefined) {
+        Object.keys(newIDs).forEach(value => {
+          if(Number(value) === val['parentID'])
+            val['parentID'] = newIDs[value];
+        })
+      }
+    })
+    return result;
+  }
 
   const contextMenuOpen = (args) => {
-    const el = args.event.target.closest(".e-headercell");
-    if (el) {
+    const el = args.event.target.closest('.e-headercell');
+    if(el) {
       colIndex = Number(el.ariaColIndex);
     }
-  };
+  }
 
   const runCustomCss = () => {
-    for (let i = 0; i < columns.length; i++) {
+    for(let i=0; i < columns.length; i++) {
       const elements = document.querySelectorAll(`[aria-colindex='${i}']`);
       elements.forEach((val, index) => {
-        if (index === 0) {
+        if(index === 0) {
           val.firstChild.style.textAlign = customCss[i].textAlign;
           val.firstChild.style.fontSize = customCss[i].fontSize;
           val.firstChild.style.color = customCss[i].color;
-        } else {
+        }
+        else {
           val.style.textAlign = customCss[i].textAlign;
           val.style.fontSize = customCss[i].fontSize;
           val.style.color = customCss[i].color;
         }
-      });
+      })
     }
-  };
+  }
 
   const actionComplete = (args) => {
-    if ((args.requestType = "reorder" && args.fromIndex !== undefined)) {
+    if(args.requestType = 'reorder' && args.fromIndex !== undefined) {
       const result = customCss;
       result.splice(args.fromIndex, 0, result.splice(args.toIndex, 1)[0]);
       setCustomCss(result);
     }
     runCustomCss();
-  };
-
-  const rowDataBound = (args) => {};
+  }
 
   React.useEffect(() => {
     runCustomCss();
-  }, [customCss]);
+  }, [ customCss ])
 
   return (
     <Box m={4}>
-      <TreeGridComponent
+      <TreeGridComponent 
         dataSource={source}
         treeColumnIndex={1}
-        idMapping="TaskID"
-        parentIdMapping="parentID"
+        idMapping='TaskID'
+        parentIdMapping='parentID'
         allowSorting={true}
         allowReordering={true}
         allowResizing={true}
@@ -366,41 +301,27 @@ export default function Index() {
         allowFiltering={isFilter}
         filterSettings={filterOptions}
         editSettings={editSettings}
-        selectionSettings={
-          isMultiSelect ? multipleSelectionSettings : singleSelectionSettings
-        }
+        selectionSettings={isMultiSelect ? multipleSelectionSettings : singleSelectionSettings}
         frozenColumns={isFreeze ? frozenCount : 0}
         contextMenuItems={contextMenuItems}
         contextMenuClick={contextMenuClick}
-        ref={(grid) => setTreegrid(grid)}
         contextMenuOpen={contextMenuOpen}
         actionComplete={actionComplete}
-        rowDataBound={rowDataBound}
+        ref={grid => setTreegrid(grid)}
       >
         <ColumnsDirective>
           {columns.map((val, index) => (
-            <ColumnDirective
+            <ColumnDirective 
               key={index}
-              field={val.field}
-              headerText={val.headerText}
+              field={val.field} 
+              headerText={val.headerText} 
               width={val.width}
-              format={val.headerText.includes("Date") ? "y-MM-dd" : null}
-              textAlign="right"
+              format={val.headerText.includes('Date') ? 'y-MM-dd' : null}
+              textAlign='right'
             />
           ))}
         </ColumnsDirective>
-        <Inject
-          services={[
-            Filter,
-            Freeze,
-            Sort,
-            Edit,
-            Reorder,
-            Resize,
-            ContextMenu,
-            RowDD,
-          ]}
-        />
+        <Inject services={[Filter, Freeze, Sort, Edit, Reorder, Resize, ContextMenu, RowDD]}/>
       </TreeGridComponent>
     </Box>
   );
